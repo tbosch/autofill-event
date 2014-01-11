@@ -1,0 +1,30 @@
+<!doctype html>
+<html ng-app>
+    <head>
+        <script src="../../bower_components/angular/angular.js"></script>
+        <style>
+            form {
+                margin-left: 20px;
+                float: left
+            }
+            .ng-values {
+                margin-left: 20px;
+                float: left
+            }
+        </style>
+    </head>
+    <body>
+        <form action="login.html" method="POST">
+            User: <input type="text" name="username" class="js-username"><br>
+            Password: <input type="password" name="password" class="js-password"><br>
+            <button class="js-submit">Submit</button>
+        </form>
+
+        <div class="ng-values">
+            Angular values:<br>
+            User: {{username}}<br>
+            Password: {{password}}
+        </div>
+    </body>
+
+</html>
