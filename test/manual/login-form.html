@@ -1,0 +1,64 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <link rel="stylesheet" type="text/css" href="manual-test.css">
+    <link rel="stylesheet" type="text/css" href="../../third_party/jasmine/jasmine.css">
+    <script type="text/javascript" src="../../third_party/jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="../../third_party/jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="manual-test.js"></script>
+
+    <script type="text/javascript" src="login-formSpec.js"></script>
+
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../src/autofill-event.js"></script>
+</head>
+<body>
+
+<div class="prepare">
+    <h1>Prepare <button class="prepare-done">Done</button></h1>
+    <ol>
+        <li>Turn on the browser setting to save passwords
+            <ul>
+                <li>Chrome: go to chrome://settings/, show advanced options and check "Offer to save passwords I enter on the web"</li>
+                <li>Firefox: go to Preferences/Security and check "Remember passwords for sites"</li>
+                <li>Safari: go to Preferences / Passwords and check "AutoFill user names and passwords"</li>
+            </ul>
+        </li>
+        <li>
+            Enter username="someUser" / password="somePass" and hit submit
+        </li>
+        <li>
+            There should be a popup that asks whether you want to store the password
+        </li>
+        <li>
+            The next page should show the values in json format
+        </li>
+        <li>
+            Go back
+        </li>
+    </ol>
+</div>
+
+<div class="run clearfix">
+    <h1>Form</h1>
+
+    <div class="ask-container"></div>
+
+    <!-- prevent incorrect submissions via onsubmit handler -->
+    <form action="http://httpbin.org/post" method="POST" onsubmit="if (this.username.value !== 'someUser' || this.password.value !== 'somePass') event.preventDefault();">
+        User: <input type="text" name="username" class="user" ng-model="username"><br>
+        Password: <input type="password" name="password" class="pass" ng-model="password"><br>
+        <button>Submit</button>
+    </form>
+
+    <div class="ng-values">
+        Angular values:<br>
+        User: <span class="ng-user" ng-bind="username"></span><br>
+        Password: <span class="ng-pass" ng-bind="password"></span>
+    </div>
+
+</div>
+
+</body>
+
+</html>

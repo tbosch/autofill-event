@@ -14,10 +14,6 @@
     "karma-junit-reporter": "0.2.1",
     "connect": "2.12.*"
   },
-  "dependencies": {
-    "mocha": "1.17.*",
-    "expect.js": "0.2.*"
-  },
   "licenses": [
     {
       "type": "MIT",

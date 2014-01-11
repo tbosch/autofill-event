@@ -6,7 +6,7 @@ module.exports = function(config) {
   sharedConfig(config);
   config.set({
     files: [
-      '../../bower_components/angular/angular.js',
+      'bower_components/angular/angular.js',
       'test/unit/testutils.js',
       'src/**/*.js',
       'test/unit/**/*Spec.js'

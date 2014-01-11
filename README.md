@@ -1,18 +1,61 @@
-TODO:
-- test manual test cases on Chrome, Firefox and Safari
-- add unit testcase when the browser starts:
-  * expose helper function that just checks all fields!
-- add unit test case:
-  * 3 fields -> should not fire change event for last one twice!
-  * need a local semaphore for this so that we don't check while we
-      are triggering change events manually!
+[![Build Status](https://travis-ci.org/tbosch/autofill-event.png?branch=master)](https://travis-ci.org/tbosch/autofill-event)
+# Autofill event polyfill
 
-- gh pages with the manual test cases
+This is a polyfill that fires change events when browsers autofill form fields without firing a change event.
+The implementation is generic so it works in any application that uses either jQuery and/or Angular.
+
+## Usage
+
+Add the script `src/autofill-event.js` after jQuery or Angular in your page.
+
+This will do the following:
+
+- after DOMContentLoaded: check all input fields
+- a field is left: check all other fields in the same form
+
+API (to manually trigger the check):
+
+- `$el.checkAndTriggerAutoFillEvent()`:
+  Execute the check for all DOM elements in the given jQuery / jQLite element.
+
+## How it works
+
+1. Remember all changes to input elements by the user (listening for change events)
+and also by JavaScript (by intercepting `$el.val()` for jQuery / jQLite elements).
+That changed value is stored on the element in a private property.
+
+2. Checking an element for auto fill:
+Compare the current `value` of the element with the remembered value. If it's different,
+trigger a change event.
+
+
+## Dependencies
+
+AngularJS or jQuery (works with either one or both)
+
+## Tests
+
+Unit tests
+
+  1. `npm install`
+  1. `bower install`
+  1. `npm install karma -g`
+  1. Run tests with jQuery: `karma start test/unit/config/karma-jquery.conf.js`
+  1. Run tests with Angular: `karma start test/unit/config/karma-angular.conf.js`
+
+Manual tests:
+
+  1. `npm install`
+  1. `bower install`
+  1. `scripts/webserver.js`
+  1. open the [manual runner](http://localhost:8000/manual-tests.html) and follow instructions
+
+Notes on test tests:
+
+  * They need to be run with a webserver and without iframes, otherwise Chrome would not autofill username/password
+
+
+# TODO
+- create gh pages with the manual test cases
   * link to test/manual/index.html for manual test cases
-- publish to bower
-- add Travis CI
-
-# Run manual tests:
-
-  1. run scripts/webserver.js
-  2. visit http://localhost:8000/test/manual/runner.html and follow instructions
+- publish to bower after first feedback rounds

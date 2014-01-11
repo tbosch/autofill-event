@@ -1,0 +1,89 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <link rel="stylesheet" type="text/css" href="manual-test.css">
+    <link rel="stylesheet" type="text/css" href="../../third_party/jasmine/jasmine.css">
+    <script type="text/javascript" src="../../third_party/jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="../../third_party/jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="manual-test.js"></script>
+
+    <script type="text/javascript" src="web-formSpec.js"></script>
+
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../src/autofill-event.js"></script>
+</head>
+<body>
+
+<div class="prepare">
+    <h1>Prepare <button class="prepare-done">Done</button></h1>
+
+    Chrome
+    <ol>
+        <li>Go to chrome://settings/, show advanced options and check "Enable Autofill to fill out web forms"
+        </li>
+        <li>Click on "Manage Autofill settings"</li>
+        <li>Add a new street address with:
+            First Name="Some" / Last Name="User" / Address line 1="1234 Some Street" / City="Some City"
+        </li>
+    </ol>
+
+    Firefox
+    <ol>
+        <li>
+            Go go to preferences/Privacy, select "Remember history" under "History".
+        </li>
+        <li>
+            Close preferences.
+        </li>
+        <li>
+            Enter name="Some User" / address="1234 Some Street" / City="Some City" and hit submit
+        </li>
+        <li>
+            The next page should show the values in json format
+        </li>
+        <li>
+            Go back
+        </li>
+    </ol>
+
+    Other browsers
+    <ol>
+        <li>
+            Enter name="Some User" / address="1234 Some Street" / City="Some City" and hit submit
+        </li>
+        <li>
+            The next page should show the values in json format
+        </li>
+        <li>
+            Go back
+        </li>
+    </ol>
+</div>
+
+<div class="run clearfix">
+    <h1>Form</h1>
+
+    <div class="ask-container"></div>
+
+    <!-- prevent incorrect submissions via onsubmit handler -->
+    <form action="http://httpbin.org/post" method="POST" onsubmit="return;
+        if (this.name.value !== 'Some User' ||
+            this.address.value !== '1234 Some Street' ||
+            this.city.value !== 'Some City') event.preventDefault();" autocomplete="on">
+        Name: <input type="text" name="name" class="name" ng-model="name"><br>
+        Address: <input type="text" name="address" class="address" ng-model="address"><br>
+        City: <input type="text" name="city" class="city" ng-model="city"><br>
+        <button>Submit</button>
+    </form>
+
+    <div class="ng-values">
+        Angular values:<br>
+        Name: <span class="ng-name" ng-bind="name"></span><br>
+        Address: <span class="ng-address" ng-bind="address"></span><br>
+        City: <span class="ng-city" ng-bind="city"></span><br>
+    </div>
+</div>
+
+</body>
+
+</html>

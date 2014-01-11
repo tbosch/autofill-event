@@ -1,13 +1,45 @@
 (function(window) {
-  addInputValueSetterListener(markValue);
-  addGlobalChangeEventListener(window.document.documentElement, markAndCheckFormInputs);
+  var $ = window.jQuery || window.angular.element;
+  var rootElement = window.document.documentElement,
+    $rootElement = $(rootElement);
+
+  addGlobalEventListener('change', markValue);
+  addValueChangeByJsListener(markValue);
+
+  $.prototype.checkAndTriggerAutoFillEvent = jqCheckAndTriggerAutoFillEvent;
+
+  // Need to use blur and not change event
+  // as Chrome does not fire change events in all cases an input is changed
+  // (e.g. when starting to type and then finish the input by auto filling a username)
+  addGlobalEventListener('blur', function(target) {
+    // setTimeout needed for Chrome as it fills other
+    // form fields a little later...
+    window.setTimeout(function() {
+      findParentForm(target).find('input').checkAndTriggerAutoFillEvent();
+    }, 20);
+  });
+
+  window.document.addEventListener('DOMContentLoaded', function() {
+    // The timeout is needed for Chrome as it auto fills
+    // login forms some time after DOMContentLoaded!
+    window.setTimeout(function() {
+      $rootElement.find('input').checkAndTriggerAutoFillEvent();
+    }, 200);
+  }, false);
 
   return;
 
   // ----------
 
-  function markValue(el) {
-    el.$$currentValue = el.value;
+  function jqCheckAndTriggerAutoFillEvent() {
+    var i, el;
+    for (i=0; i<this.length; i++) {
+      el = this[i];
+      if (!valueMarked(el)) {
+        markValue(el);
+        triggerChangeEvent(el);
+      }
+    }
   }
 
   function valueMarked(el) {
@@ -19,14 +51,18 @@
     return val === $$currentValue;
   }
 
-  function addInputValueSetterListener(listener) {
+  function markValue(el) {
+    el.$$currentValue = el.value;
+  }
+
+  function addValueChangeByJsListener(listener) {
     var jq = window.jQuery || window.angular.element,
         jqProto = jq.prototype;
     var _val = jqProto.val;
     jqProto.val = function(newValue) {
       var res = _val.apply(this, arguments);
       if (arguments.length > 0) {
-        arrForEach(this, function(el) {
+        forEach(this, function(el) {
           listener(el, newValue);
         });
       }
@@ -34,51 +70,29 @@
     }
   }
 
-  function addGlobalChangeEventListener(rootElement, listener) {
+  function addGlobalEventListener(eventName, listener) {
     // Use a capturing event listener so that
     // we also get the event when it's stopped!
-    rootElement.addEventListener('change', onchange, true);
+    // Also, the blur event does not bubble.
+    rootElement.addEventListener(eventName, onEvent, true);
 
-    function onchange(event) {
+    function onEvent(event) {
       var target = event.target;
       listener(target);
     }
   }
 
-  function markAndCheckFormInputs(input) {
-    markValue(input);
-    window.setTimeout(function() {
-      checkAndFireChangeEvent(findInputsInSameForm(input));
-    }, 11);
-  }
-
-  function findInputsInSameForm(el) {
+  function findParentForm(el) {
     while (el) {
       if (el.nodeName === 'FORM') {
-        return el.getElementsByTagName('input');
+        return $(el);
       }
       el = el.parentNode;
     }
-    return [];
+    return $();
   }
 
-  function checkAndFireChangeEvent(elements) {
-    arrForEach(elements, function(el) {
-      if (!valueMarked(el)) {
-        markValue(el);
-        triggerChangeEvent(el);
-      }
-    });
-  }
-
-  function triggerChangeEvent(element) {
-    var doc = window.document;
-    var event = doc.createEvent("HTMLEvents");
-    event.initEvent("change", true, true);
-    element.dispatchEvent(event);
-  }
-
-  function arrForEach(arr, listener) {
+  function forEach(arr, listener) {
     if (arr.forEach) {
       return arr.forEach(listener);
     }
@@ -88,6 +102,11 @@
     }
   }
 
-
+  function triggerChangeEvent(element) {
+    var doc = window.document;
+    var event = doc.createEvent("HTMLEvents");
+    event.initEvent("change", true, true);
+    element.dispatchEvent(event);
+  }
 
 })(window);
