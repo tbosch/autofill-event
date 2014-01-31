@@ -1,0 +1,22 @@
+.ask {
+    background-color: red;
+    color: white
+}
+form {
+    margin-left: 20px;
+    float: left
+}
+.ng-values {
+    margin-left: 20px;
+    float: left
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
