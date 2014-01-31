@@ -1,6 +1,6 @@
 {
   "name": "autofill-event",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "src/autofill-event.js",
   "ignore": [
     "third_party",
