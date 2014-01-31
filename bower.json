@@ -2,7 +2,6 @@
   "name": "autofill-event",
   "dependencies": {
     "jquery": "1.10.2",
-    "angular": "1.2.*",
-    "jasmine": "2.0.*"
+    "angular": "1.2.*"
   }
 }

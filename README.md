@@ -4,6 +4,8 @@
 This is a polyfill that fires change events when browsers autofill form fields without firing a change event.
 The implementation is generic so it works in any application that uses either jQuery and/or Angular.
 
+[Test page with manual tests](http://tbosch.github.io/autofill-event/)
+
 ## Usage
 
 Add the script `src/autofill-event.js` after jQuery or Angular in your page.
@@ -35,7 +37,7 @@ AngularJS or jQuery (works with either one or both)
 
 ## Tests
 
-Unit tests
+Unit tests ([Travis CI](https://travis-ci.org/tbosch/autofill-event))
 
   1. `npm install`
   1. `bower install`
@@ -43,19 +45,14 @@ Unit tests
   1. Run tests with jQuery: `karma start test/unit/config/karma-jquery.conf.js`
   1. Run tests with Angular: `karma start test/unit/config/karma-angular.conf.js`
 
-Manual tests:
+Manual Tests ([live version](http://tbosch.github.io/autofill-event/))
 
   1. `npm install`
   1. `bower install`
   1. `scripts/webserver.js`
   1. open the [manual runner](http://localhost:8000/manual-tests.html) and follow instructions
 
-Notes on test tests:
+Notes:
 
   * They need to be run with a webserver and without iframes, otherwise Chrome would not autofill username/password
 
-
-# TODO
-- create gh pages with the manual test cases
-  * link to test/manual/index.html for manual test cases
-- publish to bower after first feedback rounds
