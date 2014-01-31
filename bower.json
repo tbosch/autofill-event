@@ -1,6 +1,16 @@
 {
   "name": "autofill-event",
-  "dependencies": {
+  "version": "0.0.1",
+  "main": "src/autofill-event.js",
+  "ignore": [
+    "third_party",
+    "test",
+    "dist",
+    "scripts",
+    "index.html",
+    ".travis.yml"
+  ],
+  "devDependencies": {
     "jquery": "1.10.2",
     "angular": "1.2.*"
   }

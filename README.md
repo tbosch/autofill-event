@@ -6,9 +6,13 @@ The implementation is generic so it works in any application that uses either jQ
 
 [Test page with manual tests](http://tbosch.github.io/autofill-event/)
 
+## Install
+
+* `bower install autofill-event`
+
 ## Usage
 
-Add the script `src/autofill-event.js` after jQuery or Angular in your page.
+Add the script `autofill-event.js` after jQuery or Angular in your page.
 
 This will do the following:
 

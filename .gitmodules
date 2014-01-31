@@ -1,4 +1,4 @@
 [submodule "dist"]
 	path = dist
-	url = git@github.com:tbosch/autofill-event.git
+	url = https://github.com/tbosch/autofill-event.git
 	branch = gh-pages

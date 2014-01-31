@@ -1,3 +1,8 @@
+/**
+ * Autofill event polyfill ##version:1.0.0##
+ * (c) 2014 Google, Inc.
+ * License: MIT
+ */
 (function(window) {
   var $ = window.jQuery || window.angular.element;
   var rootElement = window.document.documentElement,
