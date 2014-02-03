@@ -72,7 +72,7 @@
         });
       }
       return res;
-    }
+    };
   }
 
   function addGlobalEventListener(eventName, listener) {
