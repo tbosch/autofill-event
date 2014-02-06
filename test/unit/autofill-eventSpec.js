@@ -92,6 +92,20 @@ describe('check other inputs when one input fires a blur event', function() {
         expect(input[0].changeEventCount).toBeUndefined();
       });
 
+    });
+
+    describe('misc', function() {
+      it('should not fire for untouched inputs with empty value', function() {
+        input.checkAndTriggerAutoFillEvent();
+        expect(input[0].changeEventCount).toBeUndefined();
+      });
+
+      it('should not fire if inputs are added with predefined value', function() {
+        container.append('<input type="text" value="test">');
+        var newInput = container.children().eq(1);
+        newInput.checkAndTriggerAutoFillEvent();
+        expect(newInput[0].changeEventCount).toBeUndefined();
+      });
 
     });
 
