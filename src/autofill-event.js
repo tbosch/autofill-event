@@ -89,10 +89,17 @@
   }
 
   function addGlobalEventListener(eventName, listener) {
-    // Use a capturing event listener so that
-    // we also get the event when it's stopped!
-    // Also, the blur event does not bubble.
-    rootElement.addEventListener(eventName, onEvent, true);
+    // Given the possibility of a polyfill for IE8 like https://gist.github.com/jonathantneal/3748027
+    // that does not support `createEvent`, in order to make this library compatible with IE8
+    // we need to check the availability of `createEvent` and not `addEventListener`
+    if (!window.document.createEvent) {
+      rootElement.attachEvent(eventName, onEvent);
+    } else {
+      // Use a capturing event listener so that
+      // we also get the event when it's stopped!
+      // Also, the blur event does not bubble.
+      rootElement.addEventListener(eventName, onEvent, true);
+    }
 
     function onEvent(event) {
       var target = event.target;
@@ -121,12 +128,12 @@
   }
 
   function triggerChangeEvent(element) {
-    var doc = window.document;
-    var event = doc.createEvent("HTMLEvents");
-    event.initEvent("change", true, true);
-    element.dispatchEvent(event);
+    if(!window.document.createEvent){
+      rootElement.change++;
+    } else {
+      var event = window.document.createEvent('HTMLEvents');
+      event.initEvent('change', true, true);
+      element.dispatchEvent(event);
+    }
   }
-
-
-
 })(window);
