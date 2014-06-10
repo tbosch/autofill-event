@@ -24,7 +24,7 @@
     }, 20);
   });
 
-  window.document.addEventListener('DOMContentLoaded', function() {
+  function DOMContentLoadedListener() {
     // mark all values that are present when the DOM is ready.
     // We don't need to trigger a change event here,
     // as js libs start with those values already being set!
@@ -35,7 +35,14 @@
     window.setTimeout(function() {
       $rootElement.find('input').checkAndTriggerAutoFillEvent();
     }, 200);
-  }, false);
+  }
+
+  // IE8 compatibility issue
+  if(!window.document.addEventListener){
+    window.document.attachEvent('DOMContentLoaded', DOMContentLoadedListener);    
+  }else{
+    window.document.addEventListener('DOMContentLoaded', DOMContentLoadedListener, false);
+  }
 
   return;
 
@@ -92,7 +99,11 @@
     // Use a capturing event listener so that
     // we also get the event when it's stopped!
     // Also, the blur event does not bubble.
-    rootElement.addEventListener(eventName, onEvent, true);
+    if(!rootElement.addEventListener){
+      rootElement.attachEvent(eventName, onEvent);      
+    }else{
+      rootElement.addEventListener(eventName, onEvent, true);
+    }
 
     function onEvent(event) {
       var target = event.target;
