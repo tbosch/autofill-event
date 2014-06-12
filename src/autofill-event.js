@@ -24,6 +24,14 @@
     }, 20);
   });
 
+   addGlobalEventListener('keypress', function(target) {
+    // setTimeout needed for Chrome as it fills other
+    // form fields a little later...
+    window.setTimeout(function() {
+      findParentForm(target).find('input').checkAndTriggerAutoFillEvent();
+    }, 20);
+  });
+
   window.document.addEventListener('DOMContentLoaded', function() {
     // mark all values that are present when the DOM is ready.
     // We don't need to trigger a change event here,
