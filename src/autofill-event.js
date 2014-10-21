@@ -21,6 +21,7 @@
     // form fields a little later...
     window.setTimeout(function() {
       findParentForm(target).find('input').checkAndTriggerAutoFillEvent();
+      findParentForm(target).find('select').checkAndTriggerAutoFillEvent();
     }, 20);
   });
 
@@ -66,6 +67,18 @@
       // ...
       // Note: it's important to not use the value property here!
       el.$$currentValue = el.getAttribute('value');
+
+      // This handles select elements, which have option tags as children
+      // If an option tag has the selected attribute, then it is the default
+      // value of the select element.  Input elements don't have children,
+      // so it is safe to have this code run after the above statement.
+      if (el.children.length > 0) {
+        forEach(el.children, function(child) {
+          if (child.getAttribute("selected")) {
+            el.$$currentValue = child.getAttribute("value");
+          }
+        });
+      }
     }
 
     var val = el.value,
