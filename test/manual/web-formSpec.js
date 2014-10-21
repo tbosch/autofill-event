@@ -1,27 +1,33 @@
 describe('normal forms', function() {
-  var name, address, city, ngName, ngAddress, ngCity,
+  var name, address, city, state, ngName, ngAddress, ngCity, ngState,
     mt = window.manualTest;
-  
+
   var nameValue = 'Some User',
     addressValue = '1234 Some Street',
-    cityValue = 'Some City';
-  
+    cityValue = 'Some City',
+    stateValue = 'Oblivion';
+
   beforeEach(function () {
     name = document.querySelector('.name');
     address = document.querySelector('.address');
     city = document.querySelector('.city');
+    state = document.querySelector('.state');
+
     ngName = document.querySelector('.ng-name');
     ngAddress = document.querySelector('.ng-address');
     ngCity = document.querySelector('.ng-city');
+    ngState = document.querySelector('.ng-state');
   });
 
   beforeEach(function() {
     mt.askForInput(name, '', 'user field');
     mt.askForInput(address, '', 'address field');
     mt.askForInput(city, '', 'city field');
+    mt.askForInput(state, '', 'state field');
     mt.askToBlur(name, 'name field');
     mt.askToBlur(address, 'address field');
     mt.askToBlur(city, 'city field');
+    mt.askToBlur(state, 'state field');
     waitForAutoFill();
   });
 
@@ -50,9 +56,12 @@ describe('normal forms', function() {
       expect(name.value).toBe(nameValue);
       expect(address.value).toBe(addressValue);
       expect(city.value).toBe(cityValue);
+      expect(state.value).toBe(stateValue);
+
       expect(ngName.textContent).toBe(nameValue);
       expect(ngAddress.textContent).toBe(addressValue);
       expect(ngCity.textContent).toBe(cityValue);
+      expect(ngState.textContent).toBe(stateValue);
     });
   });
 

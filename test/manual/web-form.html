@@ -23,7 +23,7 @@
         </li>
         <li>Click on "Manage Autofill settings"</li>
         <li>Add a new street address with:
-            First Name="Some" / Last Name="User" / Address line 1="1234 Some Street" / City="Some City"
+            First Name="Some" / Last Name="User" / Address line 1="1234 Some Street" / City="Some City" / State="Oblivion"
         </li>
     </ol>
 
@@ -36,7 +36,7 @@
             Close preferences.
         </li>
         <li>
-            Enter name="Some User" / address="1234 Some Street" / City="Some City" and hit submit
+            Enter name="Some User" / address="1234 Some Street" / City="Some City" / State="Oblivion" and hit submit
         </li>
         <li>
             The next page should show the values in json format
@@ -49,7 +49,7 @@
     Other browsers
     <ol>
         <li>
-            Enter name="Some User" / address="1234 Some Street" / City="Some City" and hit submit
+            Enter name="Some User" / address="1234 Some Street" / City="Some City" / State="Oblivion" and hit submit
         </li>
         <li>
             The next page should show the values in json format
@@ -73,6 +73,7 @@
         Name: <input type="text" name="name" class="name" ng-model="name"><br>
         Address: <input type="text" name="address" class="address" ng-model="address"><br>
         City: <input type="text" name="city" class="city" ng-model="city"><br>
+        State: <select name="state" class="state" ng-model="state"><option></option><option value="Oblivion">Oblivion</option></select><br>
         <button>Submit</button>
     </form>
 
@@ -81,6 +82,7 @@
         Name: <span class="ng-name" ng-bind="name"></span><br>
         Address: <span class="ng-address" ng-bind="address"></span><br>
         City: <span class="ng-city" ng-bind="city"></span><br>
+        State: <span class="ng-state" ng-bind="state"></span><br>
     </div>
 </div>
 
