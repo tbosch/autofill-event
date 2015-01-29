@@ -41,7 +41,6 @@ describe('check other inputs when one input fires a blur event', function() {
       input = container.children().eq(0);
     });
 
-
     describe('changes by user via change event', function() {
 
       it('should not fire an extra change event when there was a change event for the element', function() {
@@ -95,6 +94,7 @@ describe('check other inputs when one input fires a blur event', function() {
     });
 
     describe('misc', function() {
+
       it('should not fire for untouched inputs with empty value', function() {
         input.checkAndTriggerAutoFillEvent();
         expect(input[0].changeEventCount).toBeUndefined();
@@ -105,6 +105,11 @@ describe('check other inputs when one input fires a blur event', function() {
         var newInput = container.children().eq(1);
         newInput.checkAndTriggerAutoFillEvent();
         expect(newInput[0].changeEventCount).toBeUndefined();
+      });
+
+      it('should return the prototype chain so that it can be chained', function() {
+        var ret = input.checkAndTriggerAutoFillEvent();
+        expect(ret.checkAndTriggerAutoFillEvent).toBe(input.checkAndTriggerAutoFillEvent);
       });
 
     });

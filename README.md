@@ -44,17 +44,24 @@ AngularJS or jQuery (works with either one or both)
 Unit tests ([Travis CI](https://travis-ci.org/tbosch/autofill-event))
 
   1. `npm install`
-  1. `bower install`
-  1. `npm install karma -g`
-  1. Run tests with jQuery: `karma start test/unit/config/karma-jquery.conf.js`
-  1. Run tests with Angular: `karma start test/unit/config/karma-angular.conf.js`
+  2. `bower install`
+  3. `npm install -g karma-cli`
+  4. Run tests with jQuery: `karma start test/unit/config/karma-jquery.conf.js`
+  5. Run tests with Angular: `karma start test/unit/config/karma-angular.conf.js`
+
+Testing with PhantomJS
+
+  1. `npm install`
+  2. `bower install`
+  3. `npm install karma-cli phantomjs -g`
+  4. `./scripts/run-unit-tests.sh "PhantomJS"
 
 Manual Tests ([live version](http://tbosch.github.io/autofill-event/))
 
   1. `npm install`
-  1. `bower install`
-  1. `scripts/webserver.js`
-  1. open the [manual runner](http://localhost:8000/manual-tests.html) and follow instructions
+  2. `bower install`
+  3. `scripts/webserver.js`
+  4. open the [manual runner](http://localhost:8000/manual-tests.html) and follow instructions
 
 Notes:
 
