@@ -57,6 +57,7 @@
         triggerChangeEvent(el);
       }
     }
+    return this;
   }
 
   function valueMarked(el) {
