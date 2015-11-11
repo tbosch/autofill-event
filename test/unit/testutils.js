@@ -3,7 +3,8 @@
   window.testutils = {
     $: window.jQuery || window.angular.element,
     triggerBlurEvent: triggerBlurEvent,
-    triggerChangeEvent: triggerChangeEvent
+    triggerChangeEvent: triggerChangeEvent,
+    triggerInputEvent: triggerInputEvent
   };
 
   function triggerBlurEvent(element) {
@@ -12,6 +13,10 @@
 
   function triggerChangeEvent(element) {
     triggerEvent('change', element);
+  }
+
+  function triggerInputEvent(element) {
+    triggerEvent('input',element);
   }
 
   function triggerEvent(name, element) {

@@ -23,6 +23,12 @@
       findParentForm(target).find('input').checkAndTriggerAutoFillEvent();
     }, 20);
   });
+ 
+  addGlobalEventListener('input', function(target) {
+    window.setTimeout(function() {
+      findParentForm(target).find('input').checkAndTriggerAutoFillEvent();
+    }, 20);
+  });
 
   function DOMContentLoadedListener() {
     // mark all values that are present when the DOM is ready.
@@ -56,6 +62,9 @@
         markValue(el);
         triggerChangeEvent(el);
       }
+      if (hasBeenNewlyAutoFilled(el)) {
+        triggerAutoFilledEvent(el);
+      }
     }
   }
 
@@ -78,6 +87,32 @@
 
   function markValue(el) {
     el.$$currentValue = el.value;
+  }
+
+  function hasBeenNewlyAutoFilled(el) {
+    if (!("$$autoFilled" in el)) {
+      el.autoFilled=false;
+    }
+    var autoFilled = false;
+    var selector;
+    if (!el.$$autoFilled) {
+      try {
+        selector = el.parentNode.querySelector(":autofill");
+      } catch (error) {
+        try {
+          selector = el.parentNode.querySelector(":-webkit-autofill");
+        } catch (error) {
+          try {
+            selector = el.parentNode.querySelector(":-moz-autofill");
+          } catch (error) {
+            // ignore
+          }
+        }
+      }
+      autoFilled = Boolean(selector);
+      el.$$autoFilled = autoFilled;
+    }
+    return autoFilled;
   }
 
   function addValueChangeByJsListener(listener) {
@@ -135,6 +170,13 @@
     var doc = window.document;
     var event = doc.createEvent("HTMLEvents");
     event.initEvent("change", true, true);
+    element.dispatchEvent(event);
+  }
+ 
+  function triggerAutoFilledEvent(element) {
+    var doc = window.document;
+    var event = doc.createEvent("HTMLEvents");
+    event.initEvent("autoFilled", true, true);
     element.dispatchEvent(event);
   }
 
