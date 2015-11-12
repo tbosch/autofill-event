@@ -12,6 +12,6 @@
   ],
   "devDependencies": {
     "jquery": "1.10.2",
-    "angular": "1.2.*"
+    "angular": "1.2.3"
   }
 }
