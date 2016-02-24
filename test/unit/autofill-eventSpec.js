@@ -8,6 +8,10 @@ describe('check other inputs when one input fires a blur event', function() {
       event.target.changeEventCount = event.target.changeEventCount || 0;
       event.target.changeEventCount++;
     });
+    container.on('autoFilled', function(event) {
+      event.target.autoFilledEventCount = event.target.autoFilledEventCount || 0;
+      event.target.autoFilledEventCount++;
+    });
   });
 
   afterEach(function() {
@@ -33,6 +37,52 @@ describe('check other inputs when one input fires a blur event', function() {
     expect(spy.mostRecentCall.object[1]).toBe(inputs[1]);
   });
 
+  it('should fire event if the autoFilled is present for the element', function () {
+    jasmine.Clock.useMock();
+    container.append('<form><input type="text" id="id1"></form>');
+    var inputs = container.find('input');
+
+    spyOn(inputs[0].parentNode, 'querySelector').andCallFake(function (selector) {
+      return inputs[0];
+    });
+
+    testutils.triggerInputEvent(inputs[0]);
+    jasmine.Clock.tick(20);
+    expect(inputs[0].autoFilledEventCount).toBe(1);
+    expect(inputs[0].parentNode.querySelector).toHaveBeenCalledWith(':autofill');
+  });
+
+  it('should not fire event if the autofilled has previously been set', function () {
+    jasmine.Clock.useMock();
+    container.append('<form><input type="text" id="id1"></form>');
+    var inputs = container.find('input');
+    inputs[0].value = 'someValue';
+    spyOn(inputs[0].parentNode, 'querySelector').andReturn(inputs[0]);
+    testutils.triggerInputEvent(inputs[0]);
+    jasmine.Clock.tick(20);
+    expect(inputs[0].autoFilledEventCount).toBe(1);
+
+    testutils.triggerInputEvent(inputs[0]);
+    jasmine.Clock.tick(20);
+    expect(inputs[0].autoFilledEventCount).toBe(1);
+
+  });
+
+  it('should send the autofilled event to the correct input', function () {
+    jasmine.Clock.useMock();
+    container.append('<form><input type="text" id="id1"><input type="text" id="id2"></form>');
+    var inputs = container.find('input');
+    spyOn(inputs[0].parentNode, 'querySelector').andCallFake(function (selector) {
+        return inputs[1];
+      }
+    );
+    testutils.triggerInputEvent(inputs[0]);
+    jasmine.Clock.tick(20);
+    expect(inputs[0].autoFilledEventCount).toBe(1);
+    expect(inputs[1].autoFilledEventCount).toBe(1)
+
+  });
+
   describe('checkAndTriggerAutoFillEvent', function() {
     var input;
 
@@ -41,6 +91,31 @@ describe('check other inputs when one input fires a blur event', function() {
       input = container.children().eq(0);
     });
 
+    it('should not fire an extra change event when there was a change event for the element', function() {
+      // Don't use .val as we intercept this!
+      input[0].value = 'someValue';
+
+      testutils.triggerChangeEvent(input[0]);
+      expect(input[0].changeEventCount).toBe(1);
+
+      input.checkAndTriggerAutoFillEvent();
+
+      expect(input[0].changeEventCount).toBe(1);
+    });
+
+    it('should not fire an extra change event when the value did not change', function() {
+      // Don't use .val as we intercept this!
+      input[0].value = 'someValue';
+
+      testutils.triggerChangeEvent(input[0]);
+      input.checkAndTriggerAutoFillEvent();
+
+      testutils.triggerChangeEvent(input[0]);
+      input.checkAndTriggerAutoFillEvent();
+
+      expect(input[0].changeEventCount).toBe(2);
+    });
+    
 
     describe('changes by user via change event', function() {
 

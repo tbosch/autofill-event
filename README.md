@@ -34,6 +34,12 @@ That changed value is stored on the element in a private property.
 Compare the current `value` of the element with the remembered value. If it's different,
 trigger a change event.
 
+## Workaround for Chrome (which won't fill the form contents until th euser has interacted with the form)
+
+1. bind a listener for autoFilled event on your element
+``` $el.bind('autoFilled',callback) ```
+2. the callback function will not get called when a form password has been autofilled by Chrome - but Note you still cannot have access to the content of the password until the user has interacted with the form, but you can, at least, make you element respond appropriately to the event (such has by changing the class to your filled style)
+
 
 ## Dependencies
 
